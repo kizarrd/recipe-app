@@ -1,5 +1,5 @@
 export type Recipe = {
-  createdAt: number;
+  createdAt: Date;
   name: string;
   ingredients: string[];
   recipe: string[];
