@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
+import Nav from "../components/Nav";
 
 function RootLayout() {
   return (
     <div className="font-sans bg-neutral-900">
-      {/* <Header /> */}
+      <Nav />
       <Outlet />
       {/* <Footer /> */}
     </div>

@@ -14,9 +14,15 @@ function Recipes() {
 
   return (
     <main>
-      <section className="container mx-auto pt-10">
-        <header className=" text-white text-center">
-          <h1 className="text-center">레시피</h1>
+      <section className="container mx-auto mt-20 mb-40">
+        <header className=" text-white text-center max-w-[70ch] mx-auto bold mb-24">
+          <h1 className="text-5xl lg:text-6xl xl:text-7xl uppercase mb-8">
+            feed yourself some good foods
+          </h1>
+          <h2 className="text-xl max-w-[45ch] mx-auto">
+            다년간 축적된 노하우가 담긴 엄선된 레시피들을 확인해 보세요
+            <span className="text-sm block mt-2">잘좀 먹고 다니세요~</span>
+          </h2>
         </header>
         <ul className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
           {data?.map((recipe) => (
@@ -26,7 +32,7 @@ function Recipes() {
                   <CardHeader>
                     <CardTitle>{recipe.name}</CardTitle>
                     <CardDescription>
-                      맵싹 부드러운 사천식 마파두부
+                      맵싹 부드러운 사천식 두부요리
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
