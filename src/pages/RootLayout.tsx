@@ -3,7 +3,7 @@ import Nav from "../components/Nav";
 
 function RootLayout() {
   return (
-    <div className="font-sans bg-neutral-900">
+    <div className="font-sans bg-neutral-900 min-h-screen">
       <Nav />
       <Outlet />
       {/* <Footer /> */}
