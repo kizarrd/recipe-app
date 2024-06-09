@@ -27,7 +27,7 @@ function Recipes() {
         <ul className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
           {data?.map((recipe) => (
             <li>
-              <Link to={recipe.id}>
+              <Link to={`/recipe/${recipe.id}`}>
                 <Card>
                   <CardHeader>
                     <CardTitle>{recipe.name}</CardTitle>
