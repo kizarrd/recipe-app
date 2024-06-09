@@ -1,9 +1,11 @@
 import { Outlet } from "react-router-dom";
 import Nav from "../components/Nav";
+import { Toaster } from "../components/ui/toaster";
 
 function RootLayout() {
   return (
     <div className="font-sans bg-neutral-900 min-h-screen">
+      <Toaster />
       <Nav />
       <Outlet />
       {/* <Footer /> */}
