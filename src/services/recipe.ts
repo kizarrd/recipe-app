@@ -13,7 +13,18 @@ export const recipeApi = createApi({
     getRecipe: builder.query<Recipe, string>({
       query: (recipeId) => `/recipes/${recipeId}`,
     }),
+    addNewRecipe: builder.mutation<Recipe, Partial<Recipe>>({
+      query: (recipeData) => ({
+        url: "/recipes",
+        method: "POST",
+        body: recipeData,
+      }),
+    }),
   }),
 });
 
-export const { useGetRecipeQuery, useGetRecipesQuery } = recipeApi;
+export const {
+  useGetRecipeQuery,
+  useGetRecipesQuery,
+  useAddNewRecipeMutation,
+} = recipeApi;

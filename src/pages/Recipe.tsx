@@ -60,7 +60,7 @@ function Recipe() {
             <h4 className="text-3xl text-neutral-100 font-medium">재료</h4>
             <ul className="border-t-2 pt-4 border-black pl-2 font-medium">
               {ingredients.map((ingredient) => (
-                <li className="text-2xl mb-2">- {ingredient}</li>
+                <li className="text-2xl mb-2">- {ingredient.ingredient}</li>
               ))}
             </ul>
           </div>
@@ -68,7 +68,7 @@ function Recipe() {
             <h4 className="text-3xl text-neutral-100 font-medium">양념</h4>
             <ul className="border-t-2 pt-4 border-black pl-2 font-medium">
               {ingredients.map((ingredient) => (
-                <li className="text-2xl mb-2">- {ingredient}</li>
+                <li className="text-2xl mb-2">- {ingredient.ingredient}</li>
               ))}
             </ul>
           </div>

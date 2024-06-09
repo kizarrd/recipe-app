@@ -14,18 +14,19 @@ import {
 } from "../components/ui/form";
 import { Input } from "../components/ui/input";
 import { toast } from "../components/ui/use-toast";
+import { useAddNewRecipeMutation } from "../services/recipe";
 
 const FormSchema = z.object({
-  username: z.string().min(2, {
+  name: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  username2: z.string().min(2, {
+  description: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
   ingredients: z.array(
     z.object({
       ingredient: z.string().min(1, { message: "Ingredient is required." }),
-      amount: z.number().gt(0, { message: "Amount should be greater than 0." }),
+      amount: z.coerce.number().gt(0, { message: "Amount should be greater than 0." }),
       unit: z.string().min(1, { message: "Unit is required" }),
     })
   ),
@@ -35,8 +36,8 @@ function CreateRecipe() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      username: "1",
-      username2: "2",
+      name: "",
+      description: "",
       ingredients: [],
     },
   });
@@ -46,20 +47,32 @@ function CreateRecipe() {
     name: "ingredients",
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  const [addNewRecipe, { isLoading }] = useAddNewRecipeMutation();
+  
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    const { name, description, ingredients } = data;
+    const canSave = [name, description, ingredients ].every(Boolean) && !isLoading;
+    if(canSave) {
+      try {
+        toast({
+          title: "You submitted the following values:",
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+            </pre>
+          ),
+        });
+        await addNewRecipe({ name, description, ingredients })
+      } catch (err) {
+        console.error('Failed to save the recipe:', err);
+      }
+    }
   }
 
+
   return (
-    <main>
+    <main className="mx-6">
       <section className="max-w-[80ch] mx-auto bg-neutral-800 rounded-2xl p-8">
         <Form {...form}>
           <div>
@@ -70,7 +83,7 @@ function CreateRecipe() {
             >
               <FormField
                 control={form.control}
-                name="username"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Username</FormLabel>
@@ -86,7 +99,7 @@ function CreateRecipe() {
               />
               <FormField
                 control={form.control}
-                name="username2"
+                name="description"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Username</FormLabel>
