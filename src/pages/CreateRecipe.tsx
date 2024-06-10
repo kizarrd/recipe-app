@@ -26,10 +26,14 @@ const FormSchema = z.object({
   ingredients: z.array(
     z.object({
       ingredient: z.string().min(1, { message: "Ingredient is required." }),
-      amount: z.coerce.number().gt(0, { message: "Amount should be greater than 0." }),
+      amount: z.coerce
+        .number()
+        .gt(0, { message: "Amount should be greater than 0." }),
       unit: z.string().min(1, { message: "Unit is required" }),
     })
   ),
+  // directions: z.string().array(),
+  directions: z.array(z.object({ direction: z.string() })),
 });
 
 function CreateRecipe() {
@@ -39,60 +43,69 @@ function CreateRecipe() {
       name: "",
       description: "",
       ingredients: [],
+      directions: [],
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const {
+    fields: ingredientsFields,
+    append: appendIngredient,
+    remove: removeIngredient,
+  } = useFieldArray({
     control: form.control,
     name: "ingredients",
   });
 
+  const {
+    fields: directionsFields,
+    append: appendDirection,
+    remove: removeDirection,
+  } = useFieldArray({
+    control: form.control,
+    name: "directions",
+  });
+
   const [addNewRecipe, { isLoading }] = useAddNewRecipeMutation();
-  
+
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
     const { name, description, ingredients } = data;
-    const canSave = [name, description, ingredients ].every(Boolean) && !isLoading;
-    if(canSave) {
+    const canSave =
+      [name, description, ingredients].every(Boolean) && !isLoading;
+    if (canSave) {
       try {
         toast({
           title: "You submitted the following values:",
           description: (
             <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+              <code className="text-white">
+                {JSON.stringify(data, null, 2)}
+              </code>
             </pre>
           ),
         });
-        await addNewRecipe({ name, description, ingredients })
+        await addNewRecipe({ name, description, ingredients });
       } catch (err) {
-        console.error('Failed to save the recipe:', err);
+        console.error("Failed to save the recipe:", err);
       }
     }
   }
-
 
   return (
     <main className="mx-6">
       <section className="max-w-[80ch] mx-auto bg-neutral-800 rounded-2xl p-8">
         <Form {...form}>
           <div>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className=""
-              // className="w-2/3 space-y-6"
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>요리 이름</FormLabel>
                     <FormControl>
                       <Input placeholder="shadcn" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -102,18 +115,15 @@ function CreateRecipe() {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>간단한 설명 또는 소개</FormLabel>
                     <FormControl>
                       <Input placeholder="shadcn" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              {fields.map((item, index) => (
+              {ingredientsFields.map((item, index) => (
                 <div className="flex gap-4" key={item.id}>
                   <FormField
                     control={form.control}
@@ -124,9 +134,9 @@ function CreateRecipe() {
                         <FormControl>
                           <Input placeholder="shadcn" {...field} />
                         </FormControl>
-                        <FormDescription>
+                        {/* <FormDescription>
                           This is your public display name.
-                        </FormDescription>
+                        </FormDescription> */}
                         <FormMessage />
                       </FormItem>
                     )}
@@ -140,9 +150,6 @@ function CreateRecipe() {
                         <FormControl>
                           <Input placeholder="shadcn" {...field} />
                         </FormControl>
-                        <FormDescription>
-                          This is your public display name.
-                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -163,15 +170,12 @@ function CreateRecipe() {
                           </FormControl>
                           <Button
                             onClick={() => {
-                              remove(index);
+                              removeIngredient(index);
                             }}
                           >
                             Delete
                           </Button>
                         </div>
-                        <FormDescription>
-                          This is your public display name.
-                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -180,7 +184,7 @@ function CreateRecipe() {
               ))}
               <Button
                 onClick={() => {
-                  append({
+                  appendIngredient({
                     ingredient: "",
                     amount: 1,
                     unit: "",
@@ -190,7 +194,33 @@ function CreateRecipe() {
               >
                 Add Ingredient
               </Button>
-
+              {directionsFields.map((item, index) => (
+                <div className="flex gap-4" key={item.id}>
+                  <FormField
+                    control={form.control}
+                    name={`directions.${index}.direction`}
+                    render={({ field }) => (
+                      <FormItem className="w-1/2">
+                        <FormLabel className="text-white">Ingredient</FormLabel>
+                        <FormControl>
+                          <Input placeholder="shadcn" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              ))}
+              <Button
+                onClick={() => {
+                  appendDirection({
+                    direction: "",
+                  });
+                }}
+                type="button"
+              >
+                Add Direction
+              </Button>
               <Button className="mt-6" type="submit">
                 Submit
               </Button>
