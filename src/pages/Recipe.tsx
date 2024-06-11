@@ -10,16 +10,17 @@ function Recipe() {
     isLoading,
   } = useGetRecipeQuery(recipeId!.toString());
   if (isLoading) {
-    return <main className="text-white">Loading...</main>;
+    return <main className="text-foreground">Loading...</main>;
   }
   if (error) {
-    return <main className="text-white">Error!</main>;
+    return <main className="text-foreground">Error!</main>;
   }
   if (recipeData) {
-    const { name, ingredients, recipe } = recipeData;
+    const { name, ingredients, directions } = recipeData;
+    console.log(recipeData);
 
     return (
-      <main className="text-white">
+      <main className="text-foreground">
         <header className="text-center max-w-[70ch] mx-auto bold mt-10 mb-24">
           <h1 className="text-5xl lg:text-6xl xl:text-7xl uppercase mb-2">
             {name}
@@ -75,11 +76,11 @@ function Recipe() {
         </section>
         <section className="container flex flex-col gap-8 max-w-[94ch] mx-auto pb-20">
           <h1 className="text-5xl col-span-2 font-semibold">Directions</h1>
-          <div className="bg-neutral-800 p-8 rounded-2xl">
+          <div className="bg-background p-8 rounded-2xl border border-border">
             <ol className="flex flex-col gap-12">
-              {recipe.map((direction, index) => (
+              {directions.map(({ direction }, index) => (
                 <li>
-                  <h4 className="mb-3 text-xl font-bold">Step {index+1}</h4>
+                  <h4 className="mb-3 text-xl font-bold">Step {index + 1}</h4>
                   <p className="text-lg">{direction}</p>
                 </li>
               ))}

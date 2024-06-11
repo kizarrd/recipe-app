@@ -15,7 +15,7 @@ function Recipes() {
   return (
     <main>
       <section className="container mx-auto mt-20 mb-40">
-        <header className=" text-white text-center max-w-[70ch] mx-auto bold mb-24">
+        <header className="text-foreground text-center max-w-[70ch] mx-auto bold mb-24">
           <h1 className="text-5xl lg:text-6xl xl:text-7xl uppercase mb-8">
             feed yourself some good foods
           </h1>
@@ -67,7 +67,7 @@ function Recipes() {
         </ul>
       </section>
       <section>
-        <div className="columns-2 text-white">
+        <div className="columns-2 text-foreground">
           <p>Well, let me tell you something, ...</p>
           <p className="break-before-column">Sure, go ahead, laugh...</p>
           <p>Maybe we can live without...</p>

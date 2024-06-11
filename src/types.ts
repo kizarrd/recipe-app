@@ -14,6 +14,5 @@ export type Recipe = {
   description: string;
   ingredients: Ingredient[];
   directions: Direction[];
-  recipe: string[];
   id: string;
 };

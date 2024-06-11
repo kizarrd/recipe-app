@@ -130,7 +130,7 @@ function CreateRecipe() {
                     name={`ingredients.${index}.ingredient`}
                     render={({ field }) => (
                       <FormItem className="w-1/2">
-                        <FormLabel className="text-white">Ingredient</FormLabel>
+                        <FormLabel className="">Ingredient</FormLabel>
                         <FormControl>
                           <Input placeholder="shadcn" {...field} />
                         </FormControl>
@@ -201,7 +201,7 @@ function CreateRecipe() {
                     name={`directions.${index}.direction`}
                     render={({ field }) => (
                       <FormItem className="w-1/2">
-                        <FormLabel className="text-white">Ingredient</FormLabel>
+                        <FormLabel className="">Ingredient</FormLabel>
                         <FormControl>
                           <Input placeholder="shadcn" {...field} />
                         </FormControl>
