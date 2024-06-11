@@ -69,9 +69,9 @@ function CreateRecipe() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
-    const { name, description, ingredients } = data;
+    const { name, description, ingredients, directions } = data;
     const canSave =
-      [name, description, ingredients].every(Boolean) && !isLoading;
+      [name, description, ingredients, directions].every(Boolean) && !isLoading;
     if (canSave) {
       try {
         toast({
@@ -84,7 +84,7 @@ function CreateRecipe() {
             </pre>
           ),
         });
-        await addNewRecipe({ name, description, ingredients });
+        await addNewRecipe({ name, description, ingredients, directions });
       } catch (err) {
         console.error("Failed to save the recipe:", err);
       }
@@ -92,8 +92,8 @@ function CreateRecipe() {
   }
 
   return (
-    <main className="mx-6">
-      <section className="max-w-[80ch] mx-auto bg-neutral-800 rounded-2xl p-8">
+    <main className="mx-6 mt-16 mb-16">
+      <section className="max-w-[80ch] mx-auto border-border border rounded-2xl p-8">
         <Form {...form}>
           <div>
             <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
@@ -191,6 +191,7 @@ function CreateRecipe() {
                   });
                 }}
                 type="button"
+                variant={"secondary"}
               >
                 Add Ingredient
               </Button>
@@ -201,7 +202,7 @@ function CreateRecipe() {
                     name={`directions.${index}.direction`}
                     render={({ field }) => (
                       <FormItem className="w-1/2">
-                        <FormLabel className="">Ingredient</FormLabel>
+                        <FormLabel className="">Step {index+1}</FormLabel>
                         <FormControl>
                           <Input placeholder="shadcn" {...field} />
                         </FormControl>
@@ -218,12 +219,15 @@ function CreateRecipe() {
                   });
                 }}
                 type="button"
+                variant={"secondary"}
               >
                 Add Direction
               </Button>
-              <Button className="mt-6" type="submit">
-                Submit
-              </Button>
+              <div className="flex justify-end">
+                <Button className="mt-6" type="submit">
+                  Submit
+                </Button>
+              </div>
             </form>
           </div>
         </Form>
