@@ -42,6 +42,7 @@ function Nav() {
             )}
           </Button>
           <Button
+            // disable button when in a new recipe page
             disabled={location.pathname === newRecipePath ? true : false}
             className="text-base font-bold p-6 rounded-3xl"
           >
