@@ -93,6 +93,10 @@ function CreateRecipe() {
             // ),
           });
           navigate('/recipes');
+        } else {
+          toast({
+            title: "❌  저장에 실패했습니다.",
+          });
         }
       } catch (err) {
         console.error("Failed to save the recipe:", err);
