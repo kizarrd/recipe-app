@@ -47,33 +47,6 @@ function Recipes() {
           ))}
         </ul>
       </section>
-      <section className="container mx-auto bg-sky-500">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consectetur
-        accusantium unde officiis quia ullam ut voluptatibus placeat, laborum,
-        esse cum at ex a consequatur. Voluptas fuga ratione sit reprehenderit
-        soluta?
-      </section>
-      <section className="container mx-auto bg-sky-500">
-        <ul>
-          {data?.map((recipe) => (
-            <li>
-              <div>{recipe.name}</div>
-            </li>
-          ))}
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consectetur
-          accusantium unde officiis quia ullam ut voluptatibus placeat, laborum,
-          esse cum at ex a consequatur. Voluptas fuga ratione sit reprehenderit
-          soluta?
-        </ul>
-      </section>
-      <section>
-        <div className="columns-2 text-foreground">
-          <p>Well, let me tell you something, ...</p>
-          <p className="break-before-column">Sure, go ahead, laugh...</p>
-          <p>Maybe we can live without...</p>
-          <p>Look. If you think this is...</p>
-        </div>
-      </section>
     </main>
   );
 }

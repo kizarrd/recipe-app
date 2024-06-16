@@ -15,6 +15,7 @@ import {
 import { Input } from "../components/ui/input";
 import { toast } from "../components/ui/use-toast";
 import { useAddNewRecipeMutation } from "../services/recipe";
+import { Loader2 } from "lucide-react";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -202,7 +203,7 @@ function CreateRecipe() {
                     name={`directions.${index}.direction`}
                     render={({ field }) => (
                       <FormItem className="w-1/2">
-                        <FormLabel className="">Step {index+1}</FormLabel>
+                        <FormLabel className="">Step {index + 1}</FormLabel>
                         <FormControl>
                           <Input placeholder="shadcn" {...field} />
                         </FormControl>
@@ -224,7 +225,12 @@ function CreateRecipe() {
                 Add Direction
               </Button>
               <div className="flex justify-end">
-                <Button className="mt-6" type="submit">
+                <Button
+                  className="mt-6"
+                  disabled={isLoading}
+                  type="submit"
+                >
+                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Submit
                 </Button>
               </div>
