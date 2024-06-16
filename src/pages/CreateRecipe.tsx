@@ -16,6 +16,8 @@ import { Input } from "../components/ui/input";
 import { toast } from "../components/ui/use-toast";
 import { useAddNewRecipeMutation } from "../services/recipe";
 import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -66,7 +68,10 @@ function CreateRecipe() {
     name: "directions",
   });
 
-  const [addNewRecipe, { isLoading }] = useAddNewRecipeMutation();
+  const [addNewRecipe, { isLoading, isSuccess, isError }] =
+    useAddNewRecipeMutation();
+
+  const navigate = useNavigate();
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
@@ -75,17 +80,20 @@ function CreateRecipe() {
       [name, description, ingredients, directions].every(Boolean) && !isLoading;
     if (canSave) {
       try {
-        toast({
-          title: "You submitted the following values:",
-          description: (
-            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className="text-white">
-                {JSON.stringify(data, null, 2)}
-              </code>
-            </pre>
-          ),
-        });
-        await addNewRecipe({ name, description, ingredients, directions });
+        const result = await addNewRecipe({ name, description, ingredients, directions });
+        if (result.data) {
+          toast({
+            title: "✅  저장되었습니다.",
+            // description: (
+            //   <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            //     <code className="text-white">
+            //         {JSON.stringify(data, null, 2)}
+            //       </code>
+            //   </pre>
+            // ),
+          });
+          navigate('/recipes');
+        }
       } catch (err) {
         console.error("Failed to save the recipe:", err);
       }
@@ -225,12 +233,10 @@ function CreateRecipe() {
                 Add Direction
               </Button>
               <div className="flex justify-end">
-                <Button
-                  className="mt-6"
-                  disabled={isLoading}
-                  type="submit"
-                >
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                <Button className="mt-6" disabled={isLoading} type="submit">
+                  {isLoading && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
                   Submit
                 </Button>
               </div>
