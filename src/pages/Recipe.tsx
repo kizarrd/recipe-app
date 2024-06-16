@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDeleteRecipeMutation, useGetRecipeQuery } from "../services/recipe";
 import { Badge } from "../components/ui/badge";
 import { Button, buttonVariants } from "../components/ui/button";
@@ -129,7 +129,9 @@ function Recipe() {
                 className="text-md"
                 disabled={deleteIsLoading}
               >
-                Edit
+                <Link to={`/recipe/${recipeId}/edit`}>
+                  Edit
+                </Link>
               </Button>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
