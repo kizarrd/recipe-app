@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDeleteRecipeMutation, useGetRecipeQuery } from "../services/recipe";
 import { Badge } from "../components/ui/badge";
 import { Button, buttonVariants } from "../components/ui/button";
@@ -13,14 +13,29 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../components/ui/alert-dialog";
+import { toast } from "../components/ui/use-toast";
+import { Loader2 } from "lucide-react";
 
 function Recipe() {
   let { recipeId } = useParams();
 
-  const [deletRecipe, { isLoading: deleteIsLoading }] = useDeleteRecipeMutation();
+  const [deletRecipe, { isLoading: deleteIsLoading }] =
+    useDeleteRecipeMutation();
+
+  const navigate = useNavigate();
 
   async function handleDelete() {
-    await deletRecipe(recipeId!);
+    const result = await deletRecipe(recipeId!);
+    if (result.data) {
+      toast({
+        title: "✅ 삭제되었습니다.",
+      });
+      navigate("/recipes");
+    } else {
+      toast({
+        title: "❌ 삭제 실패. 다시 시도해 주세요.",
+      });
+    }
   }
 
   const {
@@ -137,7 +152,11 @@ function Recipe() {
                     <AlertDialogAction
                       className={buttonVariants({ variant: "destructive" })}
                       onClick={handleDelete}
+                      disabled={deleteIsLoading}
                     >
+                      {deleteIsLoading && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
                       Continue
                     </AlertDialogAction>
                   </AlertDialogFooter>
