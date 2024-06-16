@@ -124,12 +124,23 @@ function Recipe() {
           </div>
           <div className="container flex justify-end mb-32">
             <div className="flex gap-4">
-              <Button variant={"secondary"} className="text-md">
+              <Button
+                variant={"secondary"}
+                className="text-md"
+                disabled={deleteIsLoading}
+              >
                 Edit
               </Button>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="destructive" className="text-md">
+                  <Button
+                    disabled={deleteIsLoading}
+                    variant="destructive"
+                    className="text-md"
+                  >
+                    {deleteIsLoading && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
                     Delete
                   </Button>
                 </AlertDialogTrigger>
@@ -152,11 +163,7 @@ function Recipe() {
                     <AlertDialogAction
                       className={buttonVariants({ variant: "destructive" })}
                       onClick={handleDelete}
-                      disabled={deleteIsLoading}
                     >
-                      {deleteIsLoading && (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      )}
                       Continue
                     </AlertDialogAction>
                   </AlertDialogFooter>
