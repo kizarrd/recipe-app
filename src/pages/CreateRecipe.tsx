@@ -16,7 +16,6 @@ import { Input } from "../components/ui/input";
 import { toast } from "../components/ui/use-toast";
 import { useAddNewRecipeMutation } from "../services/recipe";
 import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const FormSchema = z.object({

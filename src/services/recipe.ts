@@ -23,9 +23,16 @@ export const recipeApi = createApi({
     deleteRecipe: builder.mutation<Recipe, string>({
       query: (recipeId) => ({
         url: `/recipes/${recipeId}`,
-        method: "DELETE"
-      })
-    })
+        method: "DELETE",
+      }),
+    }),
+    editRecipe: builder.mutation<Recipe, { recipeId: string; data: Partial<Recipe> }>({
+      query: (recipe) => ({
+        url: `/recipes/${recipe.recipeId}`,
+        method: "PUT",
+        body: recipe.data,
+      }),
+    }),
   }),
 });
 
@@ -34,4 +41,5 @@ export const {
   useGetRecipesQuery,
   useAddNewRecipeMutation,
   useDeleteRecipeMutation,
+  useEditRecipeMutation,
 } = recipeApi;
