@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import { Link } from "react-router-dom";
+import RecipeListSkeleton from "../components/skeletons/RecipeListSkeleton";
 
 function Recipes() {
   const { data, error, isLoading } = useGetRecipesQuery();
@@ -25,26 +26,33 @@ function Recipes() {
           </h2>
         </header>
         <ul className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
-          {data?.map((recipe) => (
-            <li>
-              <Link to={`/recipe/${recipe.id}`}>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>{recipe.name}</CardTitle>
-                    <CardDescription>
-                      {recipe.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p>필요 재료: </p>
-                  </CardContent>
-                  <CardFooter>
-                    <p>예상 소요 시간: 10분</p>
-                  </CardFooter>
-                </Card>
-              </Link>
-            </li>
-          ))}
+          {!isLoading ? (
+            data?.map((recipe) => (
+              <li>
+                <Link to={`/recipe/${recipe.id}`}>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>{recipe.name}</CardTitle>
+                      <CardDescription>{recipe.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p>필요 재료: </p>
+                    </CardContent>
+                    <CardFooter>
+                      <p>예상 소요 시간: 10분</p>
+                    </CardFooter>
+                  </Card>
+                </Link>
+              </li>
+            ))
+          ) : (
+            <>
+              <RecipeListSkeleton />
+              <RecipeListSkeleton />
+              <RecipeListSkeleton />
+              <RecipeListSkeleton />
+            </>
+          )}
         </ul>
       </section>
     </main>
