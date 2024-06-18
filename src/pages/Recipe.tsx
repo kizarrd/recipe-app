@@ -63,7 +63,7 @@ function Recipe() {
             맵싹한 마파두부 함 찌끄려 보이소~
           </h2>
           <div className="flex justify-center gap-2 max-w-72 flex-wrap mx-auto mb-4">
-            <Badge variant={"secondary"} className="text-sm">
+            {/* <Badge variant={"secondary"} className="text-sm">
               tag
             </Badge>
             <Badge variant={"secondary"} className="text-sm">
@@ -83,7 +83,7 @@ function Recipe() {
             </Badge>
             <Badge variant={"secondary"} className="text-sm">
               tag
-            </Badge>
+            </Badge> */}
           </div>
           <h3 className="text-xs text-slate-500">최초 작성일: 24.06.01</h3>
           <h3 className="text-xs text-slate-500">마지막 수정일: 24.06.01</h3>

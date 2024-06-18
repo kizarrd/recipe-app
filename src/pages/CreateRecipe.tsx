@@ -17,26 +17,7 @@ import { toast } from "../components/ui/use-toast";
 import { useAddNewRecipeMutation } from "../services/recipe";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
-const FormSchema = z.object({
-  name: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  description: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  ingredients: z.array(
-    z.object({
-      ingredient: z.string().min(1, { message: "Ingredient is required." }),
-      amount: z.coerce
-        .number()
-        .gt(0, { message: "Amount should be greater than 0." }),
-      unit: z.string().min(1, { message: "Unit is required" }),
-    })
-  ),
-  // directions: z.string().array(),
-  directions: z.array(z.object({ direction: z.string() })),
-});
+import { FormSchema } from "../types";
 
 function CreateRecipe() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -44,6 +25,8 @@ function CreateRecipe() {
     defaultValues: {
       name: "",
       description: "",
+      servings: 1,
+      sauceIngredients: [],
       ingredients: [],
       directions: [],
     },
@@ -56,6 +39,15 @@ function CreateRecipe() {
   } = useFieldArray({
     control: form.control,
     name: "ingredients",
+  });
+
+  const {
+    fields: sauceIngredientsFields,
+    append: appendSauceIngredient,
+    remove: removeSauceIngredient,
+  } = useFieldArray({
+    control: form.control,
+    name: "sauceIngredients",
   });
 
   const {
@@ -74,12 +66,24 @@ function CreateRecipe() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
-    const { name, description, ingredients, directions } = data;
+    const {
+      name,
+      description,
+      servings,
+      sauceIngredients,
+      ingredients,
+      directions,
+    } = data;
     const canSave =
       [name, description, ingredients, directions].every(Boolean) && !isLoading;
     if (canSave) {
       try {
-        const result = await addNewRecipe({ name, description, ingredients, directions });
+        const result = await addNewRecipe({
+          name,
+          description,
+          ingredients,
+          directions,
+        });
         if (result.data) {
           toast({
             title: "✅  저장되었습니다.",
@@ -91,7 +95,7 @@ function CreateRecipe() {
             //   </pre>
             // ),
           });
-          navigate('/recipes');
+          navigate("/recipes");
         } else {
           toast({
             title: "❌  저장에 실패했습니다.",

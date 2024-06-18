@@ -18,26 +18,7 @@ import { toast } from "../components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-
-const FormSchema = z.object({
-  name: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  description: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  ingredients: z.array(
-    z.object({
-      ingredient: z.string().min(1, { message: "Ingredient is required." }),
-      amount: z.coerce
-        .number()
-        .gt(0, { message: "Amount should be greater than 0." }),
-      unit: z.string().min(1, { message: "Unit is required" }),
-    })
-  ),
-  // directions: z.string().array(),
-  directions: z.array(z.object({ direction: z.string() })),
-});
+import { FormSchema } from "../types";
 
 function UpdateRecipe() {
   let { recipeId } = useParams();
@@ -66,6 +47,15 @@ function UpdateRecipe() {
   } = useFieldArray({
     control: form.control,
     name: "ingredients",
+  });
+
+  const {
+    fields: sauceIngredientsFields,
+    append: appendSauceIngredient,
+    remove: removeSauceIngredient,
+  } = useFieldArray({
+    control: form.control,
+    name: "sauceIngredients",
   });
 
   const {
@@ -269,7 +259,7 @@ function UpdateRecipe() {
                     {isLoading && (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     )}
-                    Submit
+                    저장
                   </Button>
                 </div>
               </form>
