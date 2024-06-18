@@ -21,7 +21,10 @@ interface RecipeFormProps {
   isLoading: boolean;
   fieldsArrays: {
     ingredientsFieldsArray: UseFieldArrayReturn<FormData, "ingredients">;
-    sauceIngredientsFieldsArray: UseFieldArrayReturn<FormData, "sauceIngredients">;
+    sauceIngredientsFieldsArray: UseFieldArrayReturn<
+      FormData,
+      "sauceIngredients"
+    >;
     directionsFieldsArray: UseFieldArrayReturn<FormData, "directions">;
   };
 }
@@ -74,6 +77,22 @@ function RecipeForm({
               <FormControl>
                 <Input
                   placeholder="단백질 폭탄 꼬소한 건두부 볶음!"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="servings"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>인분</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="2"
                   {...field}
                 />
               </FormControl>

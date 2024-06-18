@@ -32,7 +32,7 @@ function Recipes() {
                   <CardHeader>
                     <CardTitle>{recipe.name}</CardTitle>
                     <CardDescription>
-                      맵싹 부드러운 사천식 두부요리
+                      {recipe.description}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>

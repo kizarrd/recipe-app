@@ -51,13 +51,14 @@ function CreateRecipe() {
       directions,
     } = data;
     const canSave =
-      [name, description, ingredients, directions].every(Boolean) && !isLoading;
+      [name, description, ingredients, sauceIngredients, directions].every(Boolean) && !isLoading;
     if (canSave) {
       try {
         const result = await addNewRecipe({
           name,
           description,
           ingredients,
+          sauceIngredients,
           directions,
         });
         if (result.data) {

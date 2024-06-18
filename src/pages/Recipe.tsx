@@ -15,6 +15,10 @@ import {
 } from "../components/ui/alert-dialog";
 import { toast } from "../components/ui/use-toast";
 import { Loader2 } from "lucide-react";
+import { Input } from "../components/ui/input";
+import { Checkbox } from "../components/ui/checkbox";
+import { useEffect, useState } from "react";
+import { formatInShortMonthDayCommaYear } from "src/lib/formatters";
 
 function Recipe() {
   let { recipeId } = useParams();
@@ -43,6 +47,33 @@ function Recipe() {
     error,
     isLoading: recipeIsLoading,
   } = useGetRecipeQuery(recipeId!);
+
+  const [adjustableServings, setAdjustableServings] = useState<number>(1);
+  const [ingredientsAmounts, setIngredientsAmounts] = useState<number[]>();
+  const [sauceIngredientsAmounts, setSauceIngredientsAmounts] =
+    useState<number[]>();
+
+  useEffect(() => {
+    if (recipeData) {
+      setAdjustableServings(recipeData.servings);
+    }
+  }, [recipeData]);
+
+  useEffect(() => {
+    if (recipeData) {
+      setIngredientsAmounts(
+        recipeData.ingredients.map(
+          (ingredient) => ingredient.amount * adjustableServings
+        )
+      );
+      setSauceIngredientsAmounts(
+        recipeData.sauceIngredients.map(
+          (sauceIngredient) => sauceIngredient.amount * adjustableServings
+        )
+      );
+    }
+  }, [adjustableServings]);
+
   if (recipeIsLoading) {
     return <main className="text-foreground">Loading...</main>;
   }
@@ -50,7 +81,15 @@ function Recipe() {
     return <main className="text-foreground">Error!</main>;
   }
   if (recipeData) {
-    const { name, ingredients, directions } = recipeData;
+    const {
+      name,
+      createdAt,
+      servings,
+      description,
+      ingredients,
+      sauceIngredients,
+      directions,
+    } = recipeData;
     console.log(recipeData);
 
     return (
@@ -60,7 +99,7 @@ function Recipe() {
             {name}
           </h1>
           <h2 className="text-md lg:text-xl max-w-[45ch] mx-auto mb-4">
-            맵싹한 마파두부 함 찌끄려 보이소~
+            {description}
           </h2>
           <div className="flex justify-center gap-2 max-w-72 flex-wrap mx-auto mb-4">
             {/* <Badge variant={"secondary"} className="text-sm">
@@ -69,42 +108,71 @@ function Recipe() {
             <Badge variant={"secondary"} className="text-sm">
               tag
             </Badge>
-            <Badge variant={"secondary"} className="text-sm">
-              tag
-            </Badge>
-            <Badge variant={"secondary"} className="text-sm">
-              tag
-            </Badge>
-            <Badge variant={"secondary"} className="text-sm">
-              tag
-            </Badge>
-            <Badge variant={"secondary"} className="text-sm">
-              tag
-            </Badge>
-            <Badge variant={"secondary"} className="text-sm">
-              tag
-            </Badge> */}
+              */}
           </div>
-          <h3 className="text-xs text-slate-500">최초 작성일: 24.06.01</h3>
+          <h3 className="text-xs text-slate-500">최초 작성일: {formatInShortMonthDayCommaYear(createdAt)}</h3>
           <h3 className="text-xs text-slate-500">마지막 수정일: 24.06.01</h3>
         </header>
         <section className="max-w-[94ch] mx-auto">
           <div className="container grid md:grid-cols-2 gap-8 mb-24">
             <h1 className="text-5xl col-span-2 font-semibold">Ingredients</h1>
-            <h2 className="col-span-2">1 인분 기준</h2>
-            <div className="max-md:col-span-2 bg-yellow-500 rounded-2xl grid gap-4 p-8 text-neutral-800">
-              <h4 className="text-3xl text-neutral-100 font-medium">재료</h4>
-              <ul className="border-t-2 pt-4 border-black pl-2 font-medium">
-                {ingredients.map((ingredient) => (
-                  <li className="text-2xl mb-2">- {ingredient.ingredient}</li>
+            <h2 className="col-span-2 flex gap-2 items-center">
+              <Input
+                className="w-20 text-lg"
+                type="number"
+                min={1}
+                value={adjustableServings}
+                onChange={(e) => {
+                  setAdjustableServings(Number(e.target.value));
+                }}
+              />
+              <span className="text-lg font-medium">인분 기준</span>
+            </h2>
+            <div className="max-md:col-span-2 bg-background border border-border rounded-2xl flex flex-col gap-4 p-8">
+              <h4 className="text-3xl font-medium">재료</h4>
+              <ul className="border-t-2 pt-4 border-foreground pl-2 font-normal">
+                {ingredients.map((ingredient, index) => (
+                  <li className="text-xl mb-2 flex items-center gap-2">
+                    <Checkbox id={`ingredient-${index}`} className="w-5 h-5" />
+                    <label
+                      htmlFor={`ingredient-${index}`}
+                      className="flex gap-2 hover:cursor-pointer"
+                    >
+                      <div>{ingredient.ingredient}</div>
+                      <div>
+                        <Badge variant={"default"} className="text-sm">
+                          {ingredientsAmounts && ingredientsAmounts[index]}
+                          {ingredient.unit}
+                        </Badge>
+                      </div>
+                    </label>
+                  </li>
                 ))}
               </ul>
             </div>
-            <div className="max-md:col-span-2 bg-cyan-500 rounded-2xl grid gap-4 p-8 text-neutral-800">
-              <h4 className="text-3xl text-neutral-100 font-medium">양념</h4>
-              <ul className="border-t-2 pt-4 border-black pl-2 font-medium">
-                {ingredients.map((ingredient) => (
-                  <li className="text-2xl mb-2">- {ingredient.ingredient}</li>
+            <div className="max-md:col-span-2 bg-background border border-border rounded-2xl flex flex-col gap-4 p-8">
+              <h4 className="text-3xl font-medium">양념 재료</h4>
+              <ul className="border-t-2 pt-4 border-foreground pl-2 font-normal">
+                {sauceIngredients.map((sauceIngredient, index) => (
+                  <li className="text-xl mb-2 flex items-center gap-2">
+                    <Checkbox
+                      id={`sauceIngredient-${index}`}
+                      className="w-5 h-5"
+                    />
+                    <label
+                      htmlFor={`sauceIngredient-${index}`}
+                      className="flex gap-2 hover:cursor-pointer"
+                    >
+                      <div>{sauceIngredient.ingredient}</div>
+                      <div>
+                        <Badge variant={"default"} className="text-sm">
+                          {sauceIngredientsAmounts &&
+                            sauceIngredientsAmounts[index]}
+                          {sauceIngredient.unit}
+                        </Badge>
+                      </div>
+                    </label>
+                  </li>
                 ))}
               </ul>
             </div>
@@ -129,9 +197,7 @@ function Recipe() {
                 className="text-md"
                 disabled={deleteIsLoading}
               >
-                <Link to={`/recipe/${recipeId}/edit`}>
-                  Edit
-                </Link>
+                <Link to={`/recipe/${recipeId}/edit`}>Edit</Link>
               </Button>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
