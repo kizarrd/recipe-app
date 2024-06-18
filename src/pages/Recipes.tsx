@@ -45,13 +45,13 @@ function Recipes() {
                 </Link>
               </li>
             ))
-          ) : (
-            <>
-              <RecipeListSkeleton />
-              <RecipeListSkeleton />
-              <RecipeListSkeleton />
-              <RecipeListSkeleton />
-            </>
+          ) : (<>
+          
+          <RecipeListSkeleton />
+          <RecipeListSkeleton />
+          <RecipeListSkeleton />
+          <RecipeListSkeleton />
+          </>
           )}
         </ul>
       </section>
