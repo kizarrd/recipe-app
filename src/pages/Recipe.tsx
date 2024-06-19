@@ -49,9 +49,9 @@ function Recipe() {
     isLoading: recipeIsLoading,
   } = useGetRecipeQuery(recipeId!);
 
-  const [adjustableServings, setAdjustableServings] = useState<number>(0); 
-    // 초기값을 1로 하면 effect dependency에서 변화 감지 못하는 경우가 있기 때문에 refresh시 effect가 작동하지 않는 문제가 있었다.
-    // servings 값이 최소 1이기 때문에 초기값을 0으로 설정하여 같은 값이 있을 수 없도록 하였다. 
+  const [adjustableServings, setAdjustableServings] = useState<number>(0);
+  // 초기값을 1로 하면 effect dependency에서 변화 감지 못하는 경우가 있기 때문에 refresh시 effect가 작동하지 않는 문제가 있었다.
+  // servings 값이 최소 1이기 때문에 초기값을 0으로 설정하여 같은 값이 있을 수 없도록 하였다.
   const [ingredientsAmounts, setIngredientsAmounts] = useState<number[]>();
   const [sauceIngredientsAmounts, setSauceIngredientsAmounts] =
     useState<number[]>();
@@ -87,13 +87,13 @@ function Recipe() {
     const {
       name,
       createdAt,
-      servings,
+      lastEdited,
+      estimatedTimeInMinutes,
       description,
       ingredients,
       sauceIngredients,
       directions,
     } = recipeData;
-    console.log(recipeData);
 
     return (
       <main className="text-foreground">
@@ -101,20 +101,26 @@ function Recipe() {
           <h1 className="text-5xl lg:text-6xl xl:text-7xl uppercase mb-2">
             {name}
           </h1>
-          <h2 className="text-lg lg:text-xl max-w-[45ch] mx-auto mb-4">
+          <h2 className="text-lg lg:text-xl max-w-[45ch] mx-auto mb-2">
             {description}
           </h2>
-          <div className="flex justify-center gap-2 max-w-72 flex-wrap mx-auto mb-4">
-            {/* <Badge variant={"secondary"} className="text-sm">
+          <h3 className="text-sm lg:text-base max-w-[45ch] mx-auto mb-4">
+            예상 조리시간: {estimatedTimeInMinutes}분
+          </h3>
+          {/* <div className="flex justify-center gap-2 max-w-72 flex-wrap mx-auto mb-4">
+            <Badge variant={"secondary"} className="text-sm">
               tag
             </Badge>
             <Badge variant={"secondary"} className="text-sm">
               tag
             </Badge>
-              */}
-          </div>
-          <h3 className="text-xs text-muted-foreground">최초 작성일: {formatInShortMonthDayCommaYear(createdAt)}</h3>
-          <h3 className="text-xs text-muted-foreground">마지막 수정일: 24.06.01</h3>
+          </div> */}
+          <h3 className="text-xs text-muted-foreground">
+            최초 작성일: {formatInShortMonthDayCommaYear(createdAt)}
+          </h3>
+          <h3 className="text-xs text-muted-foreground">
+            마지막 수정일: {formatInShortMonthDayCommaYear(lastEdited)}
+          </h3>
         </header>
         <section className="max-w-[94ch] mx-auto">
           <div className="container grid md:grid-cols-2 gap-8 mb-24">

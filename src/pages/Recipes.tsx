@@ -9,6 +9,14 @@ import {
 } from "../components/ui/card";
 import { Link } from "react-router-dom";
 import RecipeListSkeleton from "../components/skeletons/RecipeListSkeleton";
+import { formatInShortMonthDayCommaYear } from "src/lib/formatters";
+
+function joinWithCommasWithMax3Items(array: string[]) {
+  if (array.length > 3) {
+    return array.slice(0, 3).join(", ") + ", ...";
+  }
+  return array.join(", ");
+}
 
 function Recipes() {
   const { data, error, isLoading } = useGetRecipesQuery();
@@ -36,22 +44,28 @@ function Recipes() {
                       <CardDescription>{recipe.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <p>필요 재료: </p>
+                      <p>
+                        필요 재료:{" "}
+                        {joinWithCommasWithMax3Items(
+                          recipe.ingredients.map(({ ingredient }) => ingredient)
+                        )}
+                      </p>
                     </CardContent>
-                    <CardFooter>
-                      <p>예상 소요 시간: 10분</p>
+                    <CardFooter className="flex flex-col items-start">
+                      <p>예상 조리시간: {recipe.estimatedTimeInMinutes}분</p>
+                      <CardDescription className="self-end">{formatInShortMonthDayCommaYear(recipe.createdAt)}</CardDescription>
                     </CardFooter>
                   </Card>
                 </Link>
               </li>
             ))
-          ) : (<>
-          
-          <RecipeListSkeleton />
-          <RecipeListSkeleton />
-          <RecipeListSkeleton />
-          <RecipeListSkeleton />
-          </>
+          ) : (
+            <>
+              <RecipeListSkeleton />
+              <RecipeListSkeleton />
+              <RecipeListSkeleton />
+              <RecipeListSkeleton />
+            </>
           )}
         </ul>
       </section>

@@ -4,15 +4,17 @@ type Ingredient = {
   ingredient: string;
   amount: number;
   unit: string;
-}
+};
 
 type Direction = {
   direction: string;
-}
+};
 
 export type Recipe = {
   createdAt: Date;
+  lastEdited: Date;
   name: string;
+  estimatedTimeInMinutes: number;
   servings: number;
   ingredients: Ingredient[];
   sauceIngredients: Ingredient[];
@@ -28,6 +30,9 @@ export const FormSchema = z.object({
   description: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
+  estimatedTimeInMinutes: z.coerce
+    .number()
+    .gt(0, { message: "Estimated time should be greater than 0 minute." }),
   servings: z.coerce
     .number()
     .gt(0, { message: "Servings should be greater than 0." }),

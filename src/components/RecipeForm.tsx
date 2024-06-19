@@ -106,6 +106,22 @@ function RecipeForm({
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="estimatedTimeInMinutes"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>조리 시간</FormLabel>
+              <FormControl>
+                <div className="flex w-[100px] gap-2 items-center">
+                  <Input type="number" placeholder="60" {...field} />
+                  <span>분</span>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         {ingredientsFields.map((item, index) => (
           <div className="flex gap-4" key={item.id}>
             <FormField
@@ -279,7 +295,10 @@ function RecipeForm({
                                 Step {index + 1}
                               </FormLabel> */}
                                 <FormControl>
-                                  <Input placeholder="e.g. 강불에 재료를 볶는다." {...field} />
+                                  <Input
+                                    placeholder="e.g. 강불에 재료를 볶는다."
+                                    {...field}
+                                  />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>

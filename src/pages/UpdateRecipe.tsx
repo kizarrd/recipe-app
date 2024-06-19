@@ -20,12 +20,6 @@ function UpdateRecipe() {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      ingredients: [],
-      directions: [],
-    },
   });
 
   const ingredientsFieldsArray = useFieldArray({
@@ -48,6 +42,7 @@ function UpdateRecipe() {
       form.reset({
         name: recipeData.name,
         servings: recipeData.servings,
+        estimatedTimeInMinutes: recipeData.estimatedTimeInMinutes,
         description: recipeData.description,
         ingredients: recipeData.ingredients,
         sauceIngredients: recipeData.sauceIngredients,
@@ -70,7 +65,9 @@ function UpdateRecipe() {
       recipeId !== undefined;
     if (canSave) {
       try {
-        const result = await editRecipe({ recipeId: recipeId!, data });
+        const currentDate = new Date();
+        const dataWithDate = { ...data, lastEdited: currentDate }
+        const result = await editRecipe({ recipeId: recipeId!, data: dataWithDate });
         if (result.data) {
           toast({
             title: "✅  저장되었습니다.",

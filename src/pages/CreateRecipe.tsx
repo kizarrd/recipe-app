@@ -14,6 +14,7 @@ function CreateRecipe() {
       name: "",
       description: "",
       servings: 1,
+      estimatedTimeInMinutes: 60,
       sauceIngredients: [{ ingredient: "", amount: 1, unit: "" }],
       ingredients: [{ ingredient: "", amount: 1, unit: "" }],
       directions: [{ direction: "" }],
@@ -41,22 +42,34 @@ function CreateRecipe() {
   const navigate = useNavigate();
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
     const {
       name,
       description,
       servings,
-      sauceIngredients,
+      estimatedTimeInMinutes,
       ingredients,
+      sauceIngredients,
       directions,
     } = data;
     const canSave =
-      [name, description, ingredients, sauceIngredients, directions].every(Boolean) && !isLoading;
+      [
+        name,
+        description,
+        servings,
+        estimatedTimeInMinutes,
+        ingredients,
+        sauceIngredients,
+        directions,
+      ].every(Boolean) && !isLoading;
     if (canSave) {
       try {
+        const currentDate = new Date();
         const result = await addNewRecipe({
           name,
           description,
+          estimatedTimeInMinutes,
+          createdAt: currentDate,
+          lastEdited: currentDate,
           ingredients,
           sauceIngredients,
           directions,
