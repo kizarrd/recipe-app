@@ -3,7 +3,7 @@ import { Skeleton } from "../ui/skeleton";
 function RecipeSkeleton() {
   return (
     <main className="text-foreground">
-      <header className="text-center max-w-[70ch] mx-auto bold mt-10 mb-24">
+      <header className="container text-center max-w-[70ch] mx-auto bold mt-10 mb-24">
         <Skeleton className="h-[48px] lg:h-[60px] xl:h-[72px] uppercase mb-2" />
         <Skeleton className="h-[16px] lg:h-[20px] max-w-[45ch] mx-auto mb-4" />
         <div className="flex justify-center gap-2 max-w-72 flex-wrap mx-auto mb-4">

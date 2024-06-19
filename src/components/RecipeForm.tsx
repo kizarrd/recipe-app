@@ -8,10 +8,12 @@ import {
 } from "../components/ui/form";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-import { Loader2 } from "lucide-react";
+import { GripVertical, GripVerticalIcon, Loader2 } from "lucide-react";
 import { UseFormReturn, UseFieldArrayReturn } from "react-hook-form";
 import { z } from "zod";
 import { FormSchema } from "../types";
+import { DragDropContext, Draggable } from "react-beautiful-dnd";
+import { StrictModeDroppable } from "./StrictModeDroppable";
 
 type FormData = z.infer<typeof FormSchema>;
 
@@ -50,8 +52,15 @@ function RecipeForm({
       fields: directionsFields,
       append: appendDirection,
       remove: removeDirection,
+      move: moveDirection,
     },
   } = fieldsArrays;
+
+  const onDragEnd = (result: any) => {
+    if (!result.destination) return;
+    moveDirection(result.source.index, result.destination.index);
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
@@ -91,10 +100,7 @@ function RecipeForm({
             <FormItem>
               <FormLabel>인분</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="2"
-                  {...field}
-                />
+                <Input placeholder="2" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -163,7 +169,7 @@ function RecipeForm({
                 amount: 300,
                 unit: "",
               },
-              { shouldFocus: true, focusIndex: 0 }
+              { shouldFocus: true }
             );
           }}
           type="button"
@@ -231,7 +237,7 @@ function RecipeForm({
                 amount: 1,
                 unit: "",
               },
-              { shouldFocus: true, focusIndex: 0 }
+              { shouldFocus: true }
             );
           }}
           type="button"
@@ -239,23 +245,56 @@ function RecipeForm({
         >
           양념 재료 추가
         </Button>
-        {directionsFields.map((item, index) => (
-          <div className="flex gap-4" key={item.id}>
-            <FormField
-              control={form.control}
-              name={`directions.${index}.direction`}
-              render={({ field }) => (
-                <FormItem className="w-1/2">
-                  <FormLabel className="">Step {index + 1}</FormLabel>
-                  <FormControl>
-                    <Input placeholder="shadcn" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        ))}
+        <DragDropContext onDragEnd={onDragEnd}>
+          <StrictModeDroppable droppableId="directions">
+            {(provided) => (
+              <div
+                className="flex flex-col gap-4"
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {directionsFields.map((item, index) => (
+                  <Draggable
+                    key={item.id}
+                    draggableId={`directions-${item.id}`}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        key={item.id}
+                        className="w-full flex items-center gap-4"
+                      >
+                        <div className="text-sm">Step {index + 1}</div>
+                        <div className="flex items-center gap-2 p-2 w-[80%] rounded-lg bg-muted hover:bg-muted/70">
+                          <GripVertical size={20} strokeWidth={1} />
+                          <FormField
+                            control={form.control}
+                            name={`directions.${index}.direction`}
+                            render={({ field }) => (
+                              <FormItem className="w-[80%]">
+                                {/* <FormLabel className="">
+                                Step {index + 1}
+                              </FormLabel> */}
+                                <FormControl>
+                                  <Input placeholder="e.g. 강불에 재료를 볶는다." {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </StrictModeDroppable>
+        </DragDropContext>
         <Button
           onClick={() => {
             appendDirection({

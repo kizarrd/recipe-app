@@ -97,7 +97,7 @@ function Recipe() {
 
     return (
       <main className="text-foreground">
-        <header className="text-center max-w-[70ch] mx-auto bold mt-10 mb-24">
+        <header className="container text-center max-w-[70ch] mx-auto bold mt-10 mb-24">
           <h1 className="text-5xl lg:text-6xl xl:text-7xl uppercase mb-2">
             {name}
           </h1>
