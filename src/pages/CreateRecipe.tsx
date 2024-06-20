@@ -65,14 +65,9 @@ function CreateRecipe() {
       try {
         const currentDate = new Date();
         const result = await addNewRecipe({
-          name,
-          description,
-          estimatedTimeInMinutes,
+          ...data,
           createdAt: currentDate,
           lastEdited: currentDate,
-          ingredients,
-          sauceIngredients,
-          directions,
         });
         if (result.data) {
           toast({
