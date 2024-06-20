@@ -4,7 +4,8 @@ import { Toaster } from "../components/ui/toaster";
 
 function RootLayout() {
   return (
-    <div className="font-sans bg-background min-h-screen">
+    // <div className="font-sans bg-background min-h-screen">
+    <div className="font-sans bg-background">
       <Toaster />
       <Nav />
       <Outlet />
