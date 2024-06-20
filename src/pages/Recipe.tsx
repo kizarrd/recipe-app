@@ -18,8 +18,12 @@ import { Loader2 } from "lucide-react";
 import { Input } from "../components/ui/input";
 import { Checkbox } from "../components/ui/checkbox";
 import { useEffect, useState } from "react";
-import { formatInShortMonthDayCommaYear } from "src/lib/formatters";
+import {
+  formatInShortMonthDayCommaYear,
+  truncateFromThirdDecimals,
+} from "src/lib/formatters";
 import RecipeSkeleton from "../components/skeletons/RecipeSkeleton";
+import { computeAmountForServings } from "src/lib/utils";
 
 function Recipe() {
   let { recipeId } = useParams();
@@ -65,13 +69,21 @@ function Recipe() {
   useEffect(() => {
     if (recipeData) {
       setIngredientsAmounts(
-        recipeData.ingredients.map(
-          (ingredient) => ingredient.amount * adjustableServings
+        recipeData.ingredients.map((ingredient) =>
+            computeAmountForServings(
+              ingredient.amount,
+              adjustableServings,
+              recipeData.servings,
+            )
         )
       );
       setSauceIngredientsAmounts(
-        recipeData.sauceIngredients.map(
-          (sauceIngredient) => sauceIngredient.amount * adjustableServings
+        recipeData.sauceIngredients.map((sauceIngredient) =>
+          computeAmountForServings(
+            sauceIngredient.amount,
+            adjustableServings,
+            recipeData.servings
+          )
         )
       );
     }

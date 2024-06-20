@@ -8,3 +8,7 @@ export function formatInShortMonthDayCommaYear(epochTime: Date) {
 
   return formatter.format(date); // Example output: "Jun 18, 2024"
 }
+
+export const truncateFromThirdDecimals = (number: number) => {
+  return Math.floor(number * 100) / 100;
+}
