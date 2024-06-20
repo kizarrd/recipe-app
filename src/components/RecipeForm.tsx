@@ -305,6 +305,13 @@ function RecipeForm({
                             )}
                           />
                         </div>
+                        <Button
+                          onClick={() => {
+                            removeDirection(index);
+                          }}
+                        >
+                          삭제
+                        </Button>
                       </div>
                     )}
                   </Draggable>

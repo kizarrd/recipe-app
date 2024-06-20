@@ -10,6 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import RecipeListSkeleton from "../components/skeletons/RecipeListSkeleton";
 import { formatInShortMonthDayCommaYear } from "src/lib/formatters";
+import { Timer } from "lucide-react";
 
 function joinWithCommasWithMax3Items(array: string[]) {
   if (array.length > 3) {
@@ -52,8 +53,17 @@ function Recipes() {
                       </p>
                     </CardContent>
                     <CardFooter className="flex flex-col items-start">
-                      <p>예상 조리시간: {recipe.estimatedTimeInMinutes}분</p>
-                      <CardDescription className="self-end">{formatInShortMonthDayCommaYear(recipe.createdAt)}</CardDescription>
+                      <CardDescription className="w-full flex justify-between">
+                        <div className="flex gap-1 items-center">
+                          <Timer size={14} />
+                          <p className="text-sm">
+                            {recipe.estimatedTimeInMinutes} min
+                          </p>
+                        </div>
+                        <span>
+                          {formatInShortMonthDayCommaYear(recipe.createdAt)}
+                        </span>
+                      </CardDescription>
                     </CardFooter>
                   </Card>
                 </Link>
