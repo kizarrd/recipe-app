@@ -72,7 +72,7 @@ function UpdateRecipe() {
           toast({
             title: "✅  저장되었습니다.",
           });
-          navigate("/recipes");
+          navigate(`/recipe/${result.data.id}`);
         } else {
           toast({
             title: "❌  저장에 실패했습니다.",
