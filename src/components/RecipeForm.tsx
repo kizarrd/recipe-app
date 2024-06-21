@@ -14,6 +14,7 @@ import { z } from "zod";
 import { FormSchema } from "../types";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { StrictModeDroppable } from "./StrictModeDroppable";
+import { Textarea } from "./ui/textarea";
 
 type FormData = z.infer<typeof FormSchema>;
 
@@ -295,7 +296,7 @@ function RecipeForm({
                                 Step {index + 1}
                               </FormLabel> */}
                                 <FormControl>
-                                  <Input
+                                  <Textarea
                                     placeholder="e.g. 강불에 재료를 볶는다."
                                     {...field}
                                   />
