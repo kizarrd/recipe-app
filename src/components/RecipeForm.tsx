@@ -136,7 +136,7 @@ function RecipeForm({
                   control={form.control}
                   name={`ingredients.${index}.ingredient`}
                   render={({ field }) => (
-                    <FormItem className="w-1/2">
+                    <FormItem className="flex-1">
                       <FormLabel className="">재료</FormLabel>
                       <FormControl>
                         <Input placeholder="e.g. 건두부" {...field} />
@@ -215,7 +215,7 @@ function RecipeForm({
                   control={form.control}
                   name={`sauceIngredients.${index}.ingredient`}
                   render={({ field }) => (
-                    <FormItem className="w-1/2">
+                    <FormItem className="flex-1">
                       <FormLabel className="">양념 재료</FormLabel>
                       <FormControl>
                         <Input placeholder="e.g. 다진 마늘" {...field} />
@@ -315,13 +315,13 @@ function RecipeForm({
                             <div className="hidden sm:block text-sm">
                               Step {index + 1}
                             </div>
-                            <div className="flex items-center gap-2 p-2 w-[80%] rounded-lg bg-muted hover:bg-muted/70">
+                            <div className="flex items-center gap-2 p-2 flex-1 rounded-lg bg-muted hover:bg-muted/70">
                               <GripVertical size={20} strokeWidth={1} />
                               <FormField
                                 control={form.control}
                                 name={`directions.${index}.direction`}
                                 render={({ field }) => (
-                                  <FormItem className="w-[80%]">
+                                  <FormItem className="w-full">
                                     {/* <FormLabel className="">
                                 Step {index + 1}
                               </FormLabel> */}
