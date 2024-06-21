@@ -6,6 +6,7 @@ import { useAddNewRecipeMutation } from "../services/recipe";
 import { useNavigate } from "react-router-dom";
 import { FormSchema } from "../types";
 import RecipeForm from "../components/RecipeForm";
+import FormLayout from "../components/FormLayout";
 
 function CreateRecipe() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -86,20 +87,18 @@ function CreateRecipe() {
   }
 
   return (
-    <main className="mx-6 mt-16 mb-16">
-      <section className="max-w-[80ch] mx-auto border-border border rounded-2xl p-8">
-        <RecipeForm
-          form={form}
-          onSubmit={onSubmit}
-          isLoading={isLoading}
-          fieldsArrays={{
-            ingredientsFieldsArray,
-            sauceIngredientsFieldsArray,
-            directionsFieldsArray,
-          }}
-        />
-      </section>
-    </main>
+    <FormLayout>
+      <RecipeForm
+        form={form}
+        onSubmit={onSubmit}
+        isLoading={isLoading}
+        fieldsArrays={{
+          ingredientsFieldsArray,
+          sauceIngredientsFieldsArray,
+          directionsFieldsArray,
+        }}
+      />
+    </FormLayout>
   );
 }
 

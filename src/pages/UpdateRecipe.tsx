@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { FormSchema } from "../types";
 import RecipeForm from "../components/RecipeForm";
+import FormLayout from "../components/FormLayout";
 
 function UpdateRecipe() {
   let { recipeId } = useParams();
@@ -66,8 +67,11 @@ function UpdateRecipe() {
     if (canSave) {
       try {
         const currentDate = new Date();
-        const dataWithDate = { ...data, lastEdited: currentDate }
-        const result = await editRecipe({ recipeId: recipeId!, data: dataWithDate });
+        const dataWithDate = { ...data, lastEdited: currentDate };
+        const result = await editRecipe({
+          recipeId: recipeId!,
+          data: dataWithDate,
+        });
         if (result.data) {
           toast({
             title: "✅  저장되었습니다.",
@@ -91,18 +95,19 @@ function UpdateRecipe() {
     return <main className="text-foreground">Error!</main>;
   }
   if (recipeData) {
-    const { name, ingredients, directions } = recipeData;
-
     return (
-      <main className="mx-6 mt-16 mb-16">
-        <section className="max-w-[80ch] mx-auto border-border border rounded-2xl p-8">
-          <RecipeForm form={form} onSubmit={onSubmit} isLoading={isLoading} fieldsArrays={{
+      <FormLayout>
+        <RecipeForm
+          form={form}
+          onSubmit={onSubmit}
+          isLoading={isLoading}
+          fieldsArrays={{
             ingredientsFieldsArray,
             sauceIngredientsFieldsArray,
-            directionsFieldsArray
-          }} />
-        </section>
-      </main>
+            directionsFieldsArray,
+          }}
+        />
+      </FormLayout>
     );
   }
 
