@@ -70,11 +70,11 @@ function Recipe() {
     if (recipeData) {
       setIngredientsAmounts(
         recipeData.ingredients.map((ingredient) =>
-            computeAmountForServings(
-              ingredient.amount,
-              adjustableServings,
-              recipeData.servings,
-            )
+          computeAmountForServings(
+            ingredient.amount,
+            adjustableServings,
+            recipeData.servings
+          )
         )
       );
       setSauceIngredientsAmounts(
@@ -109,7 +109,7 @@ function Recipe() {
 
     return (
       <main className="text-foreground">
-        <header className="container text-center max-w-[70ch] mx-auto bold mt-10 mb-24">
+        <header className="container text-center max-w-[70ch] mx-auto bold mt-10 sm:mt-24 mb-10 sm:mb-24">
           <h1 className="text-5xl lg:text-6xl xl:text-7xl uppercase mb-2">
             {name}
           </h1>
@@ -135,8 +135,10 @@ function Recipe() {
           </h3>
         </header>
         <section className="max-w-[94ch] mx-auto">
-          <div className="container grid md:grid-cols-2 gap-8 mb-24">
-            <h1 className="text-5xl col-span-2 font-semibold">Ingredients</h1>
+          <div className="container p-4 sm:p-8 grid md:grid-cols-2 gap-8 mb-8 sm:mb-24">
+            <h1 className="text-4xl sm:text-5xl col-span-2 font-semibold">
+              Ingredients
+            </h1>
             <h2 className="col-span-2 flex gap-2 items-center">
               <Input
                 className="w-20 text-lg"
@@ -149,69 +151,70 @@ function Recipe() {
               />
               <span className="text-lg font-medium">인분 기준</span>
             </h2>
-            <div className="max-md:col-span-2 bg-background border border-border rounded-2xl flex flex-col gap-4 p-8">
-              <h4 className="text-3xl font-medium">재료</h4>
+            <div className="max-md:col-span-2 bg-background border border-border rounded-2xl flex flex-col gap-4 p-5 sm:p-8">
+              <h4 className="text-2xl sm:text-3xl font-medium">재료</h4>
               <ul className="border-t-2 pt-4 border-foreground pl-2 font-normal">
                 {ingredients.map((ingredient, index) => (
-                  <li className="text-xl mb-2 flex items-center gap-2">
-                    <Checkbox id={`ingredient-${index}`} className="w-5 h-5" />
+                  <li className="mb-1 sm:mb-2 flex items-center gap-2">
+                    <Checkbox
+                      id={`ingredient-${index}`}
+                      className="size-4 sm:size-5"
+                    />
                     <label
                       htmlFor={`ingredient-${index}`}
-                      className="flex gap-2 hover:cursor-pointer"
+                      className="text-lg sm:text-xl hover:cursor-pointer"
                     >
-                      <div>{ingredient.ingredient}</div>
-                      <div>
-                        <Badge variant={"default"} className="text-sm">
-                          {ingredientsAmounts && ingredientsAmounts[index]}
-                          {ingredient.unit}
-                        </Badge>
-                      </div>
+                      {ingredient.ingredient}{" "}
+                      <Badge variant={"default"} className="text-xs sm:text-sm">
+                        {ingredientsAmounts && ingredientsAmounts[index]}
+                        {ingredient.unit}
+                      </Badge>
                     </label>
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="max-md:col-span-2 bg-background border border-border rounded-2xl flex flex-col gap-4 p-8">
-              <h4 className="text-3xl font-medium">양념 재료</h4>
+            <div className="max-md:col-span-2 bg-background border border-border rounded-2xl flex flex-col gap-4 p-5 sm:p-8">
+              <h4 className="text-2xl sm:text-3xl font-medium">양념 재료</h4>
               <ul className="border-t-2 pt-4 border-foreground pl-2 font-normal">
                 {sauceIngredients.map((sauceIngredient, index) => (
-                  <li className="text-xl mb-2 flex items-center gap-2">
+                  <li className="mb-2 flex items-center gap-2">
                     <Checkbox
                       id={`sauceIngredient-${index}`}
                       className="w-5 h-5"
                     />
                     <label
                       htmlFor={`sauceIngredient-${index}`}
-                      className="flex gap-2 hover:cursor-pointer"
+                      className="text-lg sm:text-xl hover:cursor-pointer"
                     >
-                      <div>{sauceIngredient.ingredient}</div>
-                      <div>
-                        <Badge variant={"default"} className="text-sm">
-                          {sauceIngredientsAmounts &&
-                            sauceIngredientsAmounts[index]}
-                          {sauceIngredient.unit}
-                        </Badge>
-                      </div>
+                      {sauceIngredient.ingredient}{" "}
+                      <Badge variant={"default"} className="text-xs sm:text-sm">
+                        {sauceIngredientsAmounts &&
+                          sauceIngredientsAmounts[index]}
+                        {sauceIngredient.unit}
+                      </Badge>
                     </label>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
-          <div className="container flex flex-col gap-8 pb-8">
-            <h1 className="text-5xl col-span-2 font-semibold">Directions</h1>
-            <div className="bg-background p-8 rounded-2xl border border-border">
-              <ol className="flex flex-col gap-12">
+          <div className="container p-4 sm:p-8 flex flex-col gap-8 pb-8">
+            <h1 className="text-4xl sm:text-5xl col-span-2 font-semibold">
+              Directions
+            </h1>
+            <div className="bg-background p-5 sm:p-8 rounded-2xl border border-border">
+              <ol className="flex flex-col gap-4 sm:gap-12">
                 {directions.map(({ direction }, index) => (
                   <li>
-                    <h4 className="mb-3 text-xl font-bold">Step {index + 1}</h4>
-                    <p className="text-lg">{direction}</p>
+                    <h4 className="mb-1 sm:mb-3 text-lg sm:text-xl font-bold">Step {index + 1}</h4>
+                    <p className="text-base sm:text-lg">{direction}</p>
                   </li>
                 ))}
               </ol>
             </div>
           </div>
-          <div className="container flex justify-end mb-32">
+          <div className="container p-4 sm:p-8 flex justify-end mb-24 sm:mb-32">
             <div className="flex gap-4">
               <Button
                 variant={"secondary"}
@@ -228,7 +231,7 @@ function Recipe() {
                     className="text-md"
                   >
                     {deleteIsLoading && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <Loader2 className="mr-2 size-4 animate-spin" />
                     )}
                     Delete
                   </Button>
