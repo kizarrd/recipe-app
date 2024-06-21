@@ -6,15 +6,22 @@ import { Sun, MoonStar } from "lucide-react";
 const newRecipePath = "/recipe/new";
 
 function Nav() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  let initialDarkModeState = false;
+  const storageTheme = localStorage.getItem("theme");
+  if (storageTheme) {
+    initialDarkModeState = storageTheme === "dark" ? true : false;
+  }
+  const [isDarkMode, setIsDarkMode] = useState(initialDarkModeState);
   const htmlRef = useRef(document.documentElement);
   let location = useLocation();
 
   useEffect(() => {
     if (isDarkMode) {
       htmlRef.current.classList.add("dark");
+      localStorage.setItem("theme", "dark");
     } else {
       htmlRef.current.classList.remove("dark");
+      localStorage.setItem("theme", "");
     }
   }, [isDarkMode]);
 
